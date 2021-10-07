@@ -18,6 +18,21 @@ body {
   color: red;
 }
 
+.faided {
+  animation-name: faided;
+  animation-duration: 1.5s;
+
+}
+
+@keyframes faided {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 a:hover {
   text-decoration: none;
 }
