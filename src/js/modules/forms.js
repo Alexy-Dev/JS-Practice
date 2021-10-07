@@ -1,13 +1,16 @@
-const forms = () => {
-    const form = document.querySelectorAll('form'),         //получаем эллементы, которые понадобятся
-          inputs = document.querySelectorAll('input'),
-          phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+import checkNumInputs from './checkNumInputs';
 
-    phoneInputs.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/\D/, '');    //простая проверка на не число
-        });
-    });
+const forms = (state) => {
+    const form = document.querySelectorAll('form'),         //получаем эллементы, которые понадобятся
+          inputs = document.querySelectorAll('input');
+
+    checkNumInputs('input[name="user_phone"]');
+
+    // phoneInputs.forEach(item => {
+    //     item.addEventListener('input', () => {
+    //         item.value = item.value.replace(/\D/, '');    //простая проверка на не число
+    //     });
+    // });
 
     const message = {                                       //объект с сообщениями для пользователя
         loading: 'Loading...',
@@ -38,6 +41,11 @@ const forms = () => {
             item.appendChild(statusMessage);
 
             const formData = new FormData(item);            //собираем данные введенные в форму пользователем
+            if (item.getAttribute('data-calc') === "end") { //в html добавляем атрибут формы data-calc="end" для добавления данных в форму пользователя и проверяем та ли это форма
+                for (let key in state) {                    //добавляем данные из формы в отправляемую форму пользователя для записи в стейт
+                    formData.append(key, state[key]);
+                }
+            }
 
             postData('assets/server.php', formData)         //отправляем запрос на сервер
             .then(res => {
